@@ -14,10 +14,17 @@ import (
 const ext = ".pid"
 
 var (
+	// Dir is the directory where the file that registers an execution will be saved.
+	// If you're having problems (usually with older versions of Linux) try setting it to /var/run
 	Dir = "/run"
+
+	// ErrOtherInstanceRunning is the error that Register() will return if another instance
+	// with the same alias is running.
 	ErrOtherInstanceRunning = errors.New("there is another instance of the program running")
 )
 
+// Find looks for a running instance of a process that have the alias provided.
+// It returns nil if no process with that alias was found.
 func Find(alias string) (*Process, error) {
 	f, err := os.Open(getPath(alias))
 	if err != nil {
@@ -55,6 +62,7 @@ func Find(alias string) (*Process, error) {
 	return p, err
 }
 
+// Register registers the current instance of the program running under the given alias.
 func Register(alias string) error {
 	p, err := Find(alias)
 	if err != nil {
@@ -88,5 +96,5 @@ func Register(alias string) error {
 }
 
 func getPath(alias string) string {
-	return filepath.Join(Dir, alias + ext)
+	return filepath.Join(Dir, alias+ext)
 }
