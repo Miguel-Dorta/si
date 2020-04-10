@@ -21,6 +21,9 @@ var (
 	// ErrOtherInstanceRunning is the error that Register() will return if another instance
 	// with the same alias is running.
 	ErrOtherInstanceRunning = errors.New("there is another instance of the program running")
+
+	// Currently open and locked files
+	openFiles = make(map[string]*os.File, 10)
 )
 
 // Find looks for a running instance of a process that have the alias provided.
@@ -76,7 +79,6 @@ func Register(alias string) error {
 	if err != nil {
 		return fmt.Errorf("error creating pid file: %w", err)
 	}
-	defer f.Close()
 
 	if err := unix.Flock(int(f.Fd()), unix.LOCK_EX|unix.LOCK_NB); err != nil {
 		if err == unix.EWOULDBLOCK {
@@ -84,13 +86,10 @@ func Register(alias string) error {
 		}
 		return fmt.Errorf("error locking pid file: %w", err)
 	}
+	openFiles[alias] = f
 
 	if _, err := f.WriteString(strconv.Itoa(os.Getpid()) + "\n"); err != nil {
 		return fmt.Errorf("error writing to pid file: %w", err)
-	}
-
-	if err := f.Close(); err != nil {
-		return fmt.Errorf("error closing pid file: %w", err)
 	}
 	return nil
 }
