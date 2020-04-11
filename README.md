@@ -1,6 +1,9 @@
 # si
 Single Instance: keep just one instance of your program.
 
+[![Build Status](https://dev.azure.com/Miguel-Dorta/si/_apis/build/status/Miguel-Dorta.si?branchName=master)](https://dev.azure.com/Miguel-Dorta/si/_build/latest?definitionId=1&branchName=master)
+[![GoDoc](https://godoc.org/github.com/Miguel-Dorta/si?status.svg)](https://pkg.go.dev/github.com/Miguel-Dorta/si)
+
 ## Description
 si is a Go(Lang) package that helps you to find and communicate with other instances of your program.
 
