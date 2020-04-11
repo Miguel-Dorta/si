@@ -6,7 +6,6 @@ steps:
 - task: Go@0
   displayName: 'go run'
   inputs:
-    command: Custom
-    customCommand: run
+    command: run
     arguments: 'test.go'
     workingDirectory: '$(system.defaultWorkingDirectory)/test'
