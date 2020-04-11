@@ -1,0 +1,12 @@
+pool:
+  name: Azure Pipelines
+  vmImage: 'ubuntu-16.04'
+
+steps:
+- task: Go@0
+  displayName: 'go run'
+  inputs:
+    command: Custom
+    customCommand: run
+    arguments: 'test.go'
+    workingDirectory: '$(system.defaultWorkingDirectory)/test'
